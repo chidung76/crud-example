@@ -134,9 +134,10 @@
 
             $scope.updateClick = function () {
                 if ($scope.product.ProductId == 0) {
-                    //$http.post("api", product).then(...);
-                    $scope.products.push($scope.product);
-                    $scope.addClick();
+                    $http.post("api/Product/", $scope.product).then(function (response) {
+                        $scope.products.push(response.data);
+                        $scope.addClick();
+                    });
                 }
                 else {
                     //$http.put...

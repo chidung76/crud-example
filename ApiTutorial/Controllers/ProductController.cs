@@ -69,5 +69,23 @@ namespace ApiTutorial.Controllers
 
             return ret;
         }
+
+        [HttpPost()]
+        public IHttpActionResult Post(Product product)
+        {
+            IHttpActionResult ret = null;
+            product = db.Products.Add(product);
+            db.SaveChanges();
+            if (product != null)
+            {
+                ret = Created<Product>(Request.RequestUri +
+                     product.ProductId.ToString(), product);
+            }
+            else
+            {
+                ret = NotFound();
+            }
+            return ret;
+        }
     }
 }
