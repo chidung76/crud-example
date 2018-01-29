@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using ApiTutorial.Models;
+using System.Data.Entity;
 
 namespace ApiTutorial.Controllers
 {
@@ -87,5 +88,46 @@ namespace ApiTutorial.Controllers
             }
             return ret;
         }
+
+        [HttpPut()]
+        public IHttpActionResult Put(int id,
+                             Product product)
+        {
+            IHttpActionResult ret = null;
+            db.Entry(product).State = EntityState.Modified;
+            db.SaveChanges();
+            if (true)
+            {
+                ret = Ok(product);
+            }
+            else
+            {
+                ret = NotFound();
+            }
+            return ret;
+        }
+
+        [HttpDelete()]
+        public IHttpActionResult Delete(int id)
+        {
+            IHttpActionResult ret = null;
+            var product = db.Products.Remove(db.Products.Where(item => item.ProductId == id).First());
+            db.SaveChanges();
+            if (true)
+            {
+                ret = Ok(true);
+            }
+            else
+            {
+                ret = NotFound();
+            }
+            return ret;
+        }
+
+        public virtual new void Dispose()
+        {
+            db.Dispose();
+        }
+
     }
 }
